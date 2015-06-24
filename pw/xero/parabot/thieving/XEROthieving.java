@@ -28,7 +28,7 @@ import org.rev317.min.api.wrappers.Item;
 @ScriptManifest
 (
 	name = "XERO Thieving",
-	description = "The ultimate Ikov AIO thieving experience!",
+	description = "All in one thieving script for Ikov. All locations supported! Fawless botting experience.",
 	author = "VectorX",
 	servers = "Ikov",
 	category = Category.THIEVING,
