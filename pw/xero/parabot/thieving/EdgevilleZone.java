@@ -1,7 +1,9 @@
 package pw.xero.parabot.thieving;
 
+import org.parabot.core.ui.Logger;
 import org.parabot.environment.api.utils.Time;
 import org.parabot.environment.scripts.framework.Strategy;
+import org.rev317.min.api.methods.Bank;
 import org.rev317.min.api.methods.Game;
 import org.rev317.min.api.methods.Inventory;
 import org.rev317.min.api.methods.Menu;
@@ -17,12 +19,14 @@ import org.rev317.min.api.wrappers.SceneObject;
 public class EdgevilleZone
 {
 	EdgevilleLocation location = new EdgevilleLocation();
-	EdgevilleDeposit deposit = new EdgevilleDeposit();
+	EdgevilleBank bank = new EdgevilleBank();
 	EdgevilleSell sell = new EdgevilleSell();
 	EdgevilleSteal steal = new EdgevilleSteal();
 	
+	
 	static final int ID_COINS = 996;
 	static final int ID_BANDIT = 1878;
+	static final int ID_BOOTH = 2213;
 	
 	public enum EdgevilleStall
 	{
@@ -84,24 +88,32 @@ public class EdgevilleZone
 		}
 	}
 	
-	public class EdgevilleDeposit implements Strategy
+	public class EdgevilleBank implements Strategy
 	{
+
 		@Override
 		public boolean activate()
 		{
-			return (Game.getOpenInterfaceId() == -1 && Game.getOpenBackDialogId() == -1 && Inventory.contains(ID_COINS));
+			return Inventory.isFull();
 		}
 
 		@Override
 		public void execute()
 		{
-			Item coins = Inventory.getItem(ID_COINS);
-			if(coins != null)
-				Menu.sendAction(493, coins.getId() - 1, coins.getSlot(), 3214);
+			if(!Bank.isOpen())
+				SceneObjects.getClosest(ID_BOOTH).interact(Option.USE);
+			Time.sleep(3000, 5000);
 			
-			Time.sleep(1000, 2000);
+			if(Bank.isOpen())
+			{
+				Logger.addMessage("Bank is open!", true);
+				//Bank.depositAll(); doesn't work anymore?
+				Menu.sendAction(646, -1, -1, 21012);
+				Time.sleep(1000, 2000);
+				Bank.close();
+				Time.sleep(300, 750);
+			}
 		}
-		
 	}
 	
 	public class EdgevilleSell implements Strategy
