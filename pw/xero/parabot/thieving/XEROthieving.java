@@ -32,7 +32,7 @@ import org.rev317.min.api.wrappers.Item;
 	author = "VectorX",
 	servers = "Ikov",
 	category = Category.THIEVING,
-	version = 1.0
+	version = 1.2
 )
 public class XEROthieving extends Script implements Paintable, MessageListener
 {
